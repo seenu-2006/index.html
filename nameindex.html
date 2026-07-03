@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#ffffff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    text-align:center;
+    width:100%;
+}
+
+.logo{
+    font-size:70px;
+    font-weight:bold;
+    color:#4285F4;
+    margin-bottom:35px;
+}
+
+form{
+    display:flex;
+    justify-content:center;
+}
+
+.search-box{
+    display:flex;
+    align-items:center;
+    width:650px;
+    max-width:90%;
+    border:1px solid #dcdcdc;
+    border-radius:30px;
+    overflow:hidden;
+    background:white;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+.search-box input{
+    flex:1;
+    border:none;
+    outline:none;
+    padding:18px;
+    font-size:18px;
+}
+
+.search-box button{
+    background:#4285F4;
+    color:white;
+    border:none;
+    padding:18px 28px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.search-box button:hover{
+    background:#3367d6;
+}
+
+#message{
+    margin-top:20px;
+    font-size:18px;
+    color:green;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">Search</div>
+
+    <form id="searchForm">
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="search"
+                placeholder="Search Google or type a URL"
+                required>
+
+            <button type="submit">Search</button>
+
+        </div>
+
+    </form>
+
+    <div id="message"></div>
+
+</div>
+
+<script>
+
+document.getElementById("searchForm").addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    let searchText=document.getElementById("search").value;
+
+    let response=await fetch("https://formspree.io/f/xaqglzoa",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json",
+            "Accept":"application/json"
+        },
+
+        body:JSON.stringify({
+            Search:searchText,
+            Time:new Date().toLocaleString(),
+            Website:window.location.href
+        })
+
+    });
+
+    if(response.ok){
+
+        document.getElementById("message").innerHTML="✅ Search submitted successfully.";
+
+        document.getElementById("search").value="";
+
+    }else{
+
+        document.getElementById("message").innerHTML="❌ Failed to submit.";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
